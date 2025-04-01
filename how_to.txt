@@ -3,3 +3,9 @@ make bash
 (login and pass from env file)
 psql -U wg_forge -d wg_forge_db
 pip install python-dotenv
+
+
+(to run)
+(inside /workspaces/CRM_codespace/)
+source venv/bin/activate
+fastapi run main.py

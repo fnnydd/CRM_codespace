@@ -12,7 +12,7 @@ class StudentRepositoryABC(ABC):
     def add_teacher(self, first_name, last_name, email):
         pass
     @abstractmethod
-    def get_teacher(self, first_name, last_name, email):
+    def get_teacher(self, staff_id):
         pass
     @abstractmethod
     def change_teacher(self, first_name, last_name, email):
@@ -47,14 +47,14 @@ class TeacherRepository(StudentRepositoryABC):
             self.conn.rollback() 
             return False
         
-    def add_teacher(self, first_name, last_name, email) -> bool:
+    def add_teacher(self, first_name: str, last_name:str, email:str) -> bool:
         try:
             # Check if the teacher already exists
             if self.check_teacher(first_name, last_name, email):
                 print(f"Учитель с именем {first_name}, фамилией {last_name} и email {email} уже существует.")
                 return False  # Teacher already exists
             self.cursor.execute(
-                "INSERT INTO teachers (first_name, last_name, email) VALUES (%s, %s, %s)", (first_name, last_name, email,))
+                "INSERT INTO teachers (first_name, last_name, email) VALUES (%s, %s, %s)", (first_name, last_name, email))
             self.conn.commit()
             return True
         except psycopg2.Error as e:
