@@ -6,20 +6,20 @@ from abc import ABC, abstractmethod
 
 class StudentRepositoryABC(ABC):
     @abstractmethod
-    def check_teacher(self, first_name, last_name, email):
-        pass
+    def check_teacher(self, first_name: str, last_name: str, email: str) -> bool: pass
+    
     @abstractmethod
-    def add_teacher(self, first_name, last_name, email):
-        pass
+    def add_teacher(self, first_name: str, last_name: str, email: str) -> bool: pass
+
     @abstractmethod
-    def get_teacher(self, staff_id):
-        pass
+    def get_teacher(self, staff_id: int): pass
+    
     @abstractmethod
-    def change_teacher(self, first_name, last_name, email):
-        pass
+    def change_teacher(self, first_name: str, last_name: str, email: str) -> bool: pass
+    
     @abstractmethod
-    def remove_teacher(self, first_name, last_name, email):
-        pass
+    def remove_teacher(self, first_name: str, last_name: str, email: str) -> bool: pass
+    
 
 
 class TeacherRepository(StudentRepositoryABC):
@@ -40,8 +40,11 @@ class TeacherRepository(StudentRepositoryABC):
                 "SELECT EXISTS (SELECT 1 FROM teachers WHERE first_name = %s AND last_name = %s AND email = %s)",
                 (first_name, last_name, email,)
             )
-            result = self.cursor.fetchone()[0]  # Fetch the boolean result
-            return bool(result)  
+            if bool(self.cursor.fetchone()):
+                return True 
+            else:
+                return False
+            # Fetch the boolean result
         except psycopg2.Error as e:
             print(f"Ошибка проверки учителя: {e}")
             self.conn.rollback() 
@@ -50,7 +53,7 @@ class TeacherRepository(StudentRepositoryABC):
     def add_teacher(self, first_name: str, last_name:str, email:str) -> bool:
         try:
             # Check if the teacher already exists
-            if self.check_teacher(first_name, last_name, email):
+            if not self.check_teacher(first_name, last_name, email):
                 print(f"Учитель с именем {first_name}, фамилией {last_name} и email {email} уже существует.")
                 return False  # Teacher already exists
             self.cursor.execute(
@@ -65,7 +68,7 @@ class TeacherRepository(StudentRepositoryABC):
     def get_teacher(self, staff_id):
         try:
             self.cursor.execute("SELECT * FROM teachers WHERE  =%s", (staff_id,))
-            return True if self.cursor.fetchone() else False
+            return self.cursor.fetchone()
         except psycopg2.Error as e:
             print(f"Ошибка получения студента: {e}")
             return None
@@ -73,7 +76,7 @@ class TeacherRepository(StudentRepositoryABC):
     def change_teacher(self, staff_id, first_name, last_name, email) -> bool:
         try:
             # Check if the teacher already exists
-            if self.check_teacher(first_name, last_name, email):
+            if not self.check_teacher(first_name, last_name, email):
                 print(f"Учитель с именем {first_name}, фамилией {last_name} и email {email} уже существует.")
                 return False  # Teacher already exists
             self.cursor.execute(
@@ -95,7 +98,7 @@ class TeacherRepository(StudentRepositoryABC):
     def remove_teacher(self, first_name, last_name, email) -> bool:
         try:
             # Check if the teacher already exists
-            if self.check_teacher(first_name, last_name, email):
+            if not self.check_teacher(first_name, last_name, email):
                 print(f"Учитель с именем {first_name}, фамилией {last_name} и email {email} уже существует.")
                 return False  # Teacher already exists
             self.cursor.execute(

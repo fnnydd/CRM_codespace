@@ -28,7 +28,7 @@ class Teacher(StudentABC):
     def add_teacher(self, first_name: str, last_name: str, email: str) -> bool:
         return TeacherRepository().add_teacher(first_name=first_name, last_name=last_name, email=email)
     @classmethod
-    def get_teacher(self, staff_id: int) -> bool:
+    def get_teacher(self, staff_id: int):
         return TeacherRepository().get_teacher(staff_id=staff_id)
     @classmethod
     def change_teacher(self, first_name: str, last_name: str, email: str) -> bool:

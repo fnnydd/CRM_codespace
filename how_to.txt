@@ -6,6 +6,8 @@ pip install python-dotenv
 
 
 (to run)
-(inside /workspaces/CRM_codespace/)
+(inside /workspaces/CRM_codespace)
 source venv/bin/activate
+
+(inside /workspaces/CRM_codespace/app)
 fastapi run main.py
