@@ -6,8 +6,13 @@ from sqlalchemy.ext.asyncio import (
     AsyncAttrs,
     async_sessionmaker,
 )
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, declared_attr
-from config_data.config import Settings
+from app.settings.config import Settings
 
 settings: Settings = Settings()
 
