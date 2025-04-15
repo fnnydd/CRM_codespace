@@ -1,0 +1,7 @@
+make
+source venv/bin/activate
+(if next command doesnt work, delete alembic\versions\gibberish_initial_migration.py)
+make alembic_revision
+make alembic_upgrade
+docker ps
+docker exec -it postgres /bin/bash
